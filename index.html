@@ -1,0 +1,1565 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stanley Executive 全球高端猎头服务报告</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --text: #333333;
+            --border: #dddddd;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #f9f9f9;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Tab Navigation */
+        .tabs-container {
+            background-color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .tabs {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: clamp(0.85rem, 1.5vw, 1rem);
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--secondary);
+        }
+
+        .tab-btn.active:after {
+            width: 100%;
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: var(--secondary);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 2rem 0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 2.5rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px var(--shadow);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1.5rem;
+            background-color: var(--light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .section-header:hover {
+            background-color: rgba(236, 240, 241, 0.7);
+        }
+
+        .section-header h3 {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .section-header .toggle-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .section-header.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            padding: 1.5rem;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            max-height: 2000px;
+        }
+
+        .section-header.collapsed + .section-content {
+            max-height: 0;
+            padding: 0 1.5rem;
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        /* Card Styling */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px var(--shadow);
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .card h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+        }
+
+        .card p {
+            color: var(--text);
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+        }
+
+        .card-accent {
+            border-left: 4px solid var(--secondary);
+        }
+
+        /* Chart Containers */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            max-height: 500px;
+            width: 100%;
+            margin: 2rem 0;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--light);
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(236, 240, 241, 0.3);
+        }
+
+        tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        /* Key Points */
+        .key-points {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .key-point {
+            flex: 1 1 200px;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px var(--shadow);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .key-point h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .key-point p {
+            font-size: 0.9rem;
+        }
+
+        /* Metrics */
+        .metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric {
+            flex: 1 1 150px;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+
+        .metric .value {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric .label {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        /* Process */
+        .process {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .process-step {
+            flex: 1 1 150px;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px var(--shadow);
+            position: relative;
+        }
+
+        .process-step:not(:last-child):after {
+            content: "→";
+            position: absolute;
+            top: 50%;
+            right: -0.9rem;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--secondary);
+            z-index: 2;
+        }
+
+        .process-step h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .process-step p {
+            font-size: 0.9rem;
+        }
+
+        .success-case {
+            border-left: 4px solid var(--success);
+            background-color: rgba(39, 174, 96, 0.05);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        .success-case h4 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .section-header {
+                padding: 1rem;
+            }
+            
+            .section-content {
+                padding: 1rem;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
+            
+            table {
+                font-size: 0.8rem;
+            }
+            
+            th, td {
+                padding: 0.6rem 0.8rem;
+            }
+            
+            .process-step:not(:last-child):after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tab-btn {
+                padding: 0.8rem 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            .key-point, .metric, .process-step {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Stanley Executive 全球高端猎头服务报告</h1>
+            <p>技术+数据+本地化相结合的全球高端人才解决方案</p>
+        </div>
+    </header>
+
+    <div class="tabs-container">
+        <div class="container">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="intro">引言</button>
+                <button class="tab-btn" data-tab="advantages">核心竞争优势</button>
+                <button class="tab-btn" data-tab="comparison">竞品对比</button>
+                <button class="tab-btn" data-tab="value">价值创造模型</button>
+                <button class="tab-btn" data-tab="cases">成功实践</button>
+                <button class="tab-btn" data-tab="future">战略合作展望</button>
+                <button class="tab-btn" data-tab="conclusion">结论</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- 引言 -->
+        <section id="intro" class="tab-content active">
+            <div class="section">
+                <div class="section-header">
+                    <h3>全球猎头市场概览</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>在全球经济不断一体化背景下，企业对高端人才的需求呈现多样化和高品质化趋势。全球猎头市场近年来呈现年复合增长率7.78%的稳定态势，预计到2031年市场规模将突破1572.9亿美元。与此同时，国际招聘和跨境人才配置已经成为驱动企业战略转型的重要支撑。</p>
+                    
+                    <div class="chart-container">
+                        <canvas id="marketGrowthChart"></canvas>
+                    </div>
+                    
+                    <p>受全球化及数字化转型影响，企业对猎头服务提出了更高要求：不仅需要掌握高端人才搜寻技能，还要求猎头机构具备全球办公室布局、先进技术驱动和庞大人才库等综合能力。</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>Stanley Executive 简介</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>Stanley Executive应运而生，其目标是打造"技术+数据+本地化"相结合的全球高端人才解决方案。本报告详细介绍Stanley Executive如何整合国际化招聘优势、构建全球战略布局和建立动态人才生态系统。</p>
+                    
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="value">180+</div>
+                            <div class="label">覆盖国家</div>
+                        </div>
+                        <div class="metric">
+                            <div class="value">92%</div>
+                            <div class="label">高管岗位填补成功率</div>
+                        </div>
+                        <div class="metric">
+                            <div class="value">89%</div>
+                            <div class="label">技术渗透率</div>
+                        </div>
+                        <div class="metric">
+                            <div class="value">14天</div>
+                            <div class="label">平均跨文化适配周期</div>
+                        </div>
+                    </div>
+                    
+                    <p>凭借多年的跨国猎头服务经验以及前沿技术支持，Stanley Executive不仅在高管搜寻、技术移民及并购后人才整合等领域拥有领先优势，同时也致力于用数字化手段和智能化工具实现人才精准匹配和风险管控。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心竞争优势 -->
+        <section id="advantages" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    <h3>三维立体服务矩阵</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>Stanley Executive从战略规划、运营实施与技术支撑三大角度出发，为企业客户提供全面且高效的猎头服务。其核心服务矩阵包括：</p>
+                    
+                    <div class="grid-3">
+                        <div class="card">
+                            <h4>战略级服务</h4>
+                            <ul>
+                                <li>全球高管搜寻</li>
+                                <li>跨境并购人才整合</li>
+                                <li>领导力评估与发展</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h4>运营级服务</h4>
+                            <ul>
+                                <li>RPO全流程外包</li>
+                                <li>薪酬架构设计</li>
+                                <li>企业文化重塑</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h4>技术级服务</h4>
+                            <ul>
+                                <li>AI智能匹配</li>
+                                <li>行为数据分析</li>
+                                <li>虚拟现实面试</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <p>通过这种三层次的综合服务体系，Stanley Executive能够在满足企业客户多样化需求的同时，快速响应市场变化，在跨境人才招聘中占据先机。</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>全球网络布局</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>全球化布局是Stanley Executive区别于传统猎头机构的重要标志之一。为实现全球业务高效运作，公司在战略性关键市场设立了区域总部，通过本地专家和多语种服务，确保对各区域法律、文化和市场特点的精准把控。</p>
+                    
+                    <div class="chart-container">
+                        <canvas id="globalOfficesChart"></canvas>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>区域总部</th>
+                                <th>覆盖国家</th>
+                                <th>行业专精团队</th>
+                                <th>本地化指数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>上海（亚太）</td>
+                                <td>中国、日本、韩国、东南亚</td>
+                                <td>智能制造、物流、能源</td>
+                                <td>92%</td>
+                            </tr>
+                            <tr>
+                                <td>慕尼黑（欧洲）</td>
+                                <td>德国、法国、意大利、瑞士</td>
+                                <td>汽车工程、精密制造</td>
+                                <td>89%</td>
+                            </tr>
+                            <tr>
+                                <td>硅谷（北美）</td>
+                                <td>美国、加拿大、墨西哥</td>
+                                <td>人工智能、半导体、医疗科技</td>
+                                <td>95%</td>
+                            </tr>
+                            <tr>
+                                <td>迪拜（中东）</td>
+                                <td>海湾六国</td>
+                                <td>能源基建、金融服务、主权基金</td>
+                                <td>85%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p><small>*注：本地化指数通过语言适配度、劳动法合规、跨文化顾问服务等10项指标进行评估。</small></p>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>智能人才生态体系</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>一个强大的猎头机构不仅依赖于全球布局和服务体系，更需构建一个稳定、高效的智能人才生态系统。Stanley Executive以"数据驱动、科技赋能、动态反馈"为原则，创建了以下三大核心模块：</p>
+                    
+                    <div class="grid-3">
+                        <div class="card card-accent">
+                            <h4>动态人才图谱</h4>
+                            <p>系统实时追踪全球顶尖人才的职业变化和动向，将各行业Top 5%候选人的动态数据通过数据可视化工具呈现出来。企业客户可以根据市场变化和未来需求提前进行战略布局和储备。</p>
+                        </div>
+                        <div class="card card-accent">
+                            <h4>预测性建模与需求预警</h4>
+                            <p>基于人工智能与大数据分析，构建了候选人供需预测模型，能够对未来6至12个月内的招聘需求和人才空缺进行精准预警。企业可以提前制定招聘计划，有效降低过程中的成本和时间风险。</p>
+                        </div>
+                        <div class="card card-accent">
+                            <h4>区块链及背调系统</h4>
+                            <p>采用区块链技术对候选人的教育背景、工作经历和资质进行不可篡改的验证。该系统极大提高了候选人筛选的准确性与信任度，保障了招聘流程的透明性与合规性。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 对标竞品关键能力对比 -->
+        <section id="comparison" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    <h3>关键维度对比</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>为了使企业客户能够直观了解各家猎头机构在各维度的竞争力，我们对Stanley Executive、IntelliPro Group与TTC Advisory进行多维度能力对比。</p>
+                    
+                    <div class="chart-container">
+                        <canvas id="competitorsRadarChart"></canvas>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>关键维度</th>
+                                <th>Stanley Executive</th>
+                                <th>IntelliPro Group</th>
+                                <th>TTC Advisory</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>技术渗透率</td>
+                                <td>89%（基于AI智能匹配、高效流程）</td>
+                                <td>62%（主要依赖基础自动化技术）</td>
+                                <td>45%（过程主要依靠人工主导）</td>
+                            </tr>
+                            <tr>
+                                <td>跨文化适配周期</td>
+                                <td>平均14天</td>
+                                <td>平均28天</td>
+                                <td>平均21天</td>
+                            </tr>
+                            <tr>
+                                <td>高管岗位填补成功率</td>
+                                <td>92%</td>
+                                <td>78%</td>
+                                <td>85%</td>
+                            </tr>
+                            <tr>
+                                <td>全球薪酬数据库覆盖</td>
+                                <td>覆盖180+国家</td>
+                                <td>覆盖90+国家</td>
+                                <td>覆盖120+国家</td>
+                            </tr>
+                            <tr>
+                                <td>危机响应与风险控制</td>
+                                <td>启动机制4小时内，高效响应</td>
+                                <td>常规响应12小时</td>
+                                <td>响应时间约8小时</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>典型案例对比</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="success-case">
+                        <h4>IntelliPro Group 案例</h4>
+                        <p>2023年，该机构为一家新能源车企在东南亚三国内完成超过200名技术工人的部署，仅用时6周，充分体现了其在区域高批量招聘上的优势。</p>
+                    </div>
+                    
+                    <div class="success-case">
+                        <h4>TTC Advisory 案例</h4>
+                        <p>曾成功为欧洲某私募基金搭建跨境并购后的核心高管团队，通过精细化的行业评估与文化适配机制，实现高层岗位的无缝对接。</p>
+                    </div>
+                    
+                    <div class="success-case">
+                        <h4>Stanley Executive 案例</h4>
+                        <p>凭借前沿的数字孪生技术，为一家半导体企业预演管理层组合效能，成功避免了市场试错风险，节省了约200万美元的潜在成本。</p>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="successRateComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 价值创造模型 -->
+        <section id="value" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    <h3>价值创造闭环</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>在全球招聘市场竞争日益激烈的环境下，企业客户不仅关注猎头机构能否找到合适的候选人，更关注服务能否从根本上提高组织效率、降低成本和降低风险。Stanley Executive构建了一套完整的价值创造模型，贯穿于从需求诊断到候选人甄选，再到后续人才赋能的整个闭环流程。</p>
+                    
+                    <div class="process">
+                        <div class="process-step">
+                            <h4>企业需求诊断</h4>
+                            <p>深入了解企业战略、岗位要求和文化特性，进行定量与定性分析</p>
+                        </div>
+                        <div class="process-step">
+                            <h4>智能候选人匹配</h4>
+                            <p>利用大数据、AI算法及全球人才图谱，快速筛选高匹配度人选</p>
+                        </div>
+                        <div class="process-step">
+                            <h4>跨文化适配与背景验证</h4>
+                            <p>区块链背调系统确保信息真实，文化适配培训促进融入</p>
+                        </div>
+                        <div class="process-step">
+                            <h4>风险对冲与应急响应</h4>
+                            <p>完善的风险预警与应急响应机制，数小时内处理突发情况</p>
+                        </div>
+                        <div class="process-step">
+                            <h4>持续赋能与绩效反馈</h4>
+                            <p>定期回访、绩效跟踪和数据反馈，持续优化招聘策略</p>
+                        </div>
+                        <div class="process-step">
+                            <h4>闭环优化</h4>
+                            <p>系统整理数据与反馈，形成闭环效应，支持下一轮招聘策略</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>价值创造指标</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="chart-container">
+                        <canvas id="valueCreationChart"></canvas>
+                    </div>
+                    
+                    <div class="key-points">
+                        <div class="key-point">
+                            <h4>效率提升</h4>
+                            <p>通过AI技术和全球数据库，招聘周期缩短42%，信息匹配精度提升35%</p>
+                        </div>
+                        <div class="key-point">
+                            <h4>成本控制</h4>
+                            <p>精细化薪酬数据对比和人才预测，为企业节省19%人才获取成本</p>
+                        </div>
+                        <div class="key-point">
+                            <h4>风险管控</h4>
+                            <p>区块链背调技术与跨文化适配评估，将录用失败率降至行业平均水平的40%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 行业成功实践 -->
+        <section id="cases" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    <h3>案例1：跨境并购人才整合——中东新能源项目</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <h4>项目背景</h4>
+                    <p>某中资集团在中东地区启动新能源开发项目，对项目团队的国际化要求极高。该项目从CFO到现场工程师的招募任务繁重，涉及不同国家的法律及文化适配问题。</p>
+                    
+                    <h4>执行方案</h4>
+                    <ul>
+                        <li><strong>需求诊断</strong>：与客户深入沟通，明确项目各岗位的职责、技术要求与文化特性；利用全球薪酬数据库确定合理薪酬范围。</li>
+                        <li><strong>全球候选人筛选</strong>：通过智能人才生态体系，短时间内筛选出符合条件的候选人，并按照跨文化适配程度进行分级。</li>
+                        <li><strong>文化培训与背景验证</strong>：采用区块链背调技术对候选人教育、工作经历进行不可篡改验证，同时安排文化冲突预测模型，降低跨文化管理风险。</li>
+                        <li><strong>风险对冲与团队搭建</strong>：在45天内完成跨国人才部署，并建立风险预警机制，确保团队在项目启动初期保持高效协作。</li>
+                    </ul>
+                    
+                    <h4>项目成果</h4>
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="value">45天</div>
+                            <div class="label">完成跨国团队组建</div>
+                        </div>
+                        <div class="metric">
+                            <div class="value">67%</div>
+                            <div class="label">团队磨合期缩短</div>
+                        </div>
+                        <div class="metric">
+                            <div class="value">19%</div>
+                            <div class="label">薪酬成本降低</div>
+                        </div>
+                    </div>
+                    
+                    <p>成功搭建一支包含高层管理者和一线技术骨干在内的跨国团队，覆盖范围涉及欧洲、中东和亚洲。团队磨合期较传统方式缩短了67%，使项目在预定时间内顺利启动。得益于精准匹配和本地化服务，薪酬成本相比行业平均水平降低了约19%，极大增强了项目整体竞争力。</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>案例2：硬科技人才突击战——AI芯片企业高管招聘</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <h4>项目背景</h4>
+                    <p>一家处于高速发展期的AI芯片企业在技术革新与市场突破阶段，急需补充行业专家特别是CTO及核心高管团队，以推动企业核心技术研发和产品商业化。</p>
+                    
+                    <h4>执行方案</h4>
+                    <ul>
+                        <li><strong>深度需求剖析</strong>：派出专业团队，与企业高层多次面对面交流，详细解析岗位核心竞争力要求与未来发展规划。</li>
+                        <li><strong>暗网数据与全球搜索</strong>：借助暗网数据追踪技术和全球人才大数据分析，定位行业内极具竞争力的候选人。</li>
+                        <li><strong>创新激励方案设计</strong>：为锁定目标候选人，团队设计了包含股权激励、绩效奖金的多层次激励方案，有效解决核心人才的流动性问题。</li>
+                        <li><strong>高级面试流程与虚拟现实辅导</strong>：利用虚拟现实面试平台，模拟企业未来工作场景，让候选人提前感受企业文化及工作环境，推动双向匹配。</li>
+                    </ul>
+                    
+                    <div class="chart-container">
+                        <canvas id="talentAcquisitionChart"></canvas>
+                    </div>
+                    
+                    <h4>项目成果</h4>
+                    <p>成功为企业招募到合适的CTO与其他高层管理人员，高管岗位填补成功率达到92%，远超竞品平均水平。通过精细化激励方案设计，最终使得高层候选人的市场溢价水平比预期降低32%，达到优化成本效果。结合虚拟现实面试及后续文化融合培训，新高管团队在入职后的半年内实现了高效协同与业绩突破，明显提升了企业整体竞争力。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 战略合作展望 -->
+        <section id="future" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    <h3>前沿技术的实验与应用</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>随着量子计算、人工智能、机器学习和区块链技术的迅速发展，Stanley Executive正积极开展以下试点项目：</p>
+                    
+                    <div class="grid-3">
+                        <div class="card">
+                            <h4>量子计算在人才匹配中的应用实验</h4>
+                            <p>通过量子算法探索大规模人才数据集的最优匹配方案，提高匹配精准度和响应速度。</p>
+                        </div>
+                        <div class="card">
+                            <h4>深度学习与人才行为预测</h4>
+                            <p>建立更为精准的预测性建模系统，预测未来6-12个月内的市场人才供需趋势，并提供实时调节方案。</p>
+                        </div>
+                        <div class="card">
+                            <h4>区块链背调与数字身份验证</h4>
+                            <p>持续强化区块链技术在教育背景和职业经历验证中的应用，构建更加权威和透明的候选人数据库。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>地缘政治与文化适配管理系统</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>全球人才跨境流动不可避免地受制于地缘政治和多元文化影响，Stanley Executive计划利用大数据和全球法律专家资源，建立地缘政治风险预警系统和跨文化适配管理平台。该系统将实现：</p>
+                    
+                    <ul>
+                        <li><strong>风险预警</strong>：实时监控各区域政治、经济动态，提前预判人才流动风险。</li>
+                        <li><strong>文化适配培训</strong>：向企业客户和候选人提供定制化的跨文化培训，降低因文化冲突造成的管理风险。</li>
+                        <li><strong>法律合规咨询</strong>：建立全球法律顾问团队，确保跨国招聘过程中严格遵守各国劳动法及相关法规。</li>
+                    </ul>
+                    
+                    <div class="chart-container">
+                        <canvas id="cultureFitChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>ESG标准与高管胜任力模型创新</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>近年来，企业越来越重视环境、社会及公司治理（ESG）标准。Stanley Executive将ESG理念融入猎头服务，通过构建高管胜任力模型，帮助企业在招募高层人才时：</p>
+                    
+                    <ul>
+                        <li>同时考量候选人的企业社会责任感和环境保护意识。</li>
+                        <li>建立长期激励机制，使新任高管在推动企业业绩增长的同时，积极贯彻ESG战略。</li>
+                        <li>通过定期评估和反馈，持续优化模型，打造兼具竞争实力与可持续发展的高层团队。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>持续拓展战略合作伙伴网络</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>为了更好地整合全球资源，Stanley Executive正在积极扩大与各区域本地猎头机构、跨国企业集团以及专业人才交流平台的合作。具体举措包括：</p>
+                    
+                    <ul>
+                        <li><strong>联合研发人才搜索系统</strong>：与知名软件供应商协同开发定制化人才搜索引擎，实现全球人才信息的实时共享。</li>
+                        <li><strong>跨国人才招聘峰会</strong>：定期举办全球高端人才招聘峰会，为企业客户提供面对面交流及经验分享的机会，建立行业内最强合作网络。</li>
+                        <li><strong>战略联盟与资本运作</strong>：通过与行业领军企业结成战略联盟，推动猎头服务与资本市场深度融合，实现业务规模和影响力的双重扩张。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 结论 -->
+        <section id="conclusion" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    <h3>核心竞争优势总结</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p>通过对全球猎头市场形势的深度剖析以及与竞对IntelliPro Group和TTC Advisory的对比，本文全面展现了Stanley Executive在国际化招聘领域的独特竞争优势和市场领先地位。</p>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>关键点</th>
+                                <th>主要优势描述</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>服务矩阵优势</td>
+                                <td>通过战略、运营与技术层次融合，实现定制化全链路猎头服务</td>
+                            </tr>
+                            <tr>
+                                <td>全球网络布局</td>
+                                <td>多区域总部覆盖180+国家，确保各区域本地化精准落地</td>
+                            </tr>
+                            <tr>
+                                <td>智能人才生态系统</td>
+                                <td>基于数据和AI进行动态人才图谱、预测性建模以及区块链背调，保障信息真实和精准匹配</td>
+                            </tr>
+                            <tr>
+                                <td>竞品对比</td>
+                                <td>在技术渗透、响应速度和全球数据库覆盖率上均领先于IntelliPro与TTC</td>
+                            </tr>
+                            <tr>
+                                <td>成功实践</td>
+                                <td>多项目成功案例验证，如中东新能源项目和AI芯片企业高管招聘，显著节省成本和时间</td>
+                            </tr>
+                            <tr>
+                                <td>未来战略规划</td>
+                                <td>前沿技术实验、跨文化适配、ESG标准融合及全球战略联盟布局，为企业提供持续赋能</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3>关键价值总结</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="key-points">
+                        <div class="key-point">
+                            <h4>高效精准</h4>
+                            <p>利用AI及大数据实现人才精准匹配，缩短招聘周期</p>
+                        </div>
+                        <div class="key-point">
+                            <h4>全球覆盖</h4>
+                            <p>覆盖180+国家的薪酬和人才数据库，确保跨境招聘无缝对接</p>
+                        </div>
+                        <div class="key-point">
+                            <h4>风险控制</h4>
+                            <p>通过跨文化适配和区块链背调系统降低招聘风险</p>
+                        </div>
+                        <div class="key-point">
+                            <h4>持续赋能</h4>
+                            <p>闭环反馈与持续培训机制，助力企业构建长效人才梯队</p>
+                        </div>
+                        <div class="key-point">
+                            <h4>前沿创新</h4>
+                            <p>不断探索量子计算、虚拟现实面试及ESG高管模型，紧跟全球猎头服务最新趋势</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="conclusionChart"></canvas>
+                    </div>
+                    
+                    <p>面对全球市场竞争的复杂局面和企业人才战略需求的不断升级，Stanley Executive以其"技术+数据+本地化"的全新服务理念，成功构建了一套领先于传统猎头方式的全球高端人才解决方案。通过引入前沿科技、建立全球网络、实施风险对冲及持续赋能机制，Stanley Executive不仅实现了内部高效协同，更在与IntelliPro Group、TTC Advisory等竞品的对比中展现出无可替代的综合实力。</p>
+                    
+                    <p>未来，Stanley Executive将继续引领猎头行业变革，整合全球资源和创新技术，助力更多企业在不断变化的国际市场中抢占人才高地，实现可持续发展。我们诚邀各位企业客户与我们携手，共同开启全球高端猎头服务的新时代。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化全局图表实例对象
+            if (!window.chartInstances) window.chartInstances = {};
+            
+            // Tab 切换功能实现
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    
+                    // 移除所有活动状态
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // 添加活动状态到当前选项卡
+                    button.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    // 滚动到内容顶部
+                    window.scrollTo({
+                        top: document.querySelector('.tabs-container').offsetTop,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 懒加载当前标签页的图表
+                    initChartsForTab(tabId);
+                });
+            });
+            
+            // 折叠/展开章节功能实现
+            const sectionHeaders = document.querySelectorAll('.section-header');
+            
+            sectionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    header.classList.toggle('collapsed');
+                    
+                    // 如果展开了包含图表的部分，刷新图表
+                    if (!header.classList.contains('collapsed')) {
+                        const chartCanvases = header.nextElementSibling.querySelectorAll('canvas');
+                        chartCanvases.forEach(canvas => {
+                            const chartId = canvas.id;
+                            if (window.chartInstances[chartId]) {
+                                window.chartInstances[chartId].resize();
+                            }
+                        });
+                    }
+                });
+            });
+            
+            // 初始化当前活动标签页的图表
+            const activeTabId = document.querySelector('.tab-content.active').id;
+            initChartsForTab(activeTabId);
+            
+            // 窗口大小改变时，重新调整所有已渲染的图表
+            window.addEventListener('resize', function() {
+                if (window.chartInstances) {
+                    for (let chartId in window.chartInstances) {
+                        if (window.chartInstances[chartId]) {
+                            window.chartInstances[chartId].resize();
+                        }
+                    }
+                }
+            });
+            
+            // 根据标签页 ID 初始化相关图表
+            function initChartsForTab(tabId) {
+                switch(tabId) {
+                    case 'intro':
+                        initMarketGrowthChart();
+                        break;
+                    case 'advantages':
+                        initGlobalOfficesChart();
+                        break;
+                    case 'comparison':
+                        initCompetitorsRadarChart();
+                        initSuccessRateComparisonChart();
+                        break;
+                    case 'value':
+                        initValueCreationChart();
+                        break;
+                    case 'cases':
+                        initTalentAcquisitionChart();
+                        break;
+                    case 'future':
+                        initCultureFitChart();
+                        break;
+                    case 'conclusion':
+                        initConclusionChart();
+                        break;
+                }
+            }
+            
+            // 各图表初始化函数
+            function initMarketGrowthChart() {
+                const ctx = document.getElementById('marketGrowthChart');
+                if (!ctx) return;
+                
+                // 检查是否已经初始化
+                if (window.chartInstances[ctx.id]) {
+                    window.chartInstances[ctx.id].destroy();
+                }
+                
+                window.chartInstances[ctx.id] = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031'],
+                        datasets: [{
+                            label: '全球猎头市场规模 (亿美元)',
+                            data: [800, 862, 930, 1002, 1080, 1164, 1254, 1352, 1457, 1570, 1692, 1823],
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '全球猎头市场规模预测 (2020-2031)',
+                                font: {
+                                    size: 16
+                                }
+                            },
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                title: {
+                                    display: true,
+                                    text: '市场规模 (亿美元)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: '年份'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initGlobalOfficesChart() {
+                const ctx = document.getElementById('globalOfficesChart');
+                if (!ctx) return;
+                
+                // 检查是否已经初始化
+                if (window.chartInstances[ctx.id]) {
+                    window.chartInstances[ctx.id].destroy();
+                }
+                
+                window.chartInstances[ctx.id] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['上海（亚太）', '慕尼黑（欧洲）', '硅谷（北美）', '迪拜（中东）'],
+                        datasets: [{
+                            label: '本地化指数 (%)',
+                            data: [92, 89, 95, 85],
+                            backgroundColor: [
+                                'rgba(52, 152, 219, 0.7)',
+                                'rgba(46, 204, 113, 0.7)',
+                                'rgba(155, 89, 182, 0.7)',
+                                'rgba(241, 196, 15, 0.7)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '区域总部本地化指数对比',
+                                font: {
+                                    size: 16
+                                }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `本地化指数: ${context.parsed.y}%`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: '本地化指数 (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initCompetitorsRadarChart() {
+                const ctx = document.getElementById('competitorsRadarChart');
+                if (!ctx) return;
+                
+                // 检查是否已经初始化
+                if (window.chartInstances[ctx.id]) {
+                    window.chartInstances[ctx.id].destroy();
+                }
+                
+                window.chartInstances[ctx.id] = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: [
+                            '技术渗透率',
+                            '跨文化适配能力',
+                            '高管岗位填补成功率',
+                            '全球薪酬数据库覆盖',
+                            '危机响应速度'
+                        ],
+                        datasets: [
+                            {
+                                label: 'Stanley Executive',
+                                data: [89, 86, 92, 90, 95],
+                                backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                                borderColor: 'rgba(52, 152, 219, 1)',
+                                pointBackgroundColor: 'rgba(52, 152, 219, 1)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgba(52, 152, 219, 1)'
+                            },
+                            {
+                                label: 'IntelliPro Group',
+                                data: [62, 64, 78, 60, 70],
+                                backgroundColor: 'rgba(46, 204, 113, 0.2)',
+                                borderColor: 'rgba(46, 204, 113, 1)',
+                                pointBackgroundColor: 'rgba(46, 204, 113, 1)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgba(46, 204, 113, 1)'
+                            },
+                            {
+                                label: 'TTC Advisory',
+                                data: [45, 76, 85, 75, 80],
+                                backgroundColor: 'rgba(231, 76, 60, 0.2)',
+                                borderColor: 'rgba(231, 76, 60, 1)',
+                                pointBackgroundColor: 'rgba(231, 76, 60, 1)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgba(231, 76, 60, 1)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        elements: {
+                            line: {
+                                borderWidth: 2
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '竞争力雷达对比',
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        },
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    display: true
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 100
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initSuccessRateComparisonChart() {
+                const ctx = document.getElementById('successRateComparisonChart');
+                if (!ctx) return;
+                
+                // 检查是否已经初始化
+                if (window.chartInstances[ctx.id]) {
+                    window.chartInstances[ctx.id].destroy();
+                }
+                
+                window.chartInstances[ctx.id] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['高管岗位成功率', '跨文化适配周期(天)', '技术渗透率', '危机响应时间(小时)'],
+                        datasets: [
+                            {
+                                label: 'Stanley Executive',
+                                data: [92, 14, 89, 4],
+                                backgroundColor: 'rgba(52, 152, 219, 0.7)'
+                            },
+                            {
+                                label: 'IntelliPro Group',
+                                data: [78, 28, 62, 12],
+                                backgroundColor: 'rgba(46, 204, 113, 0.7)'
+                            },
+                            {
+                                label: 'TTC Advisory',
+                                data: [85, 21, 45, 8],
+                                backgroundColor: 'rgba(231, 76, 60, 0.7)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '关键指标对比',
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '数值'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initValueCreationChart() {
+                const ctx = document.getElementById('valueCreationChart');
+                if (!ctx) return;
+                
+                // 检查是否已经初始化
+                if (window.chartInstances[ctx.id]) {
+                    window.chartInstances[ctx.id].destroy();
+                }
+                
+                window.chartInstances[ctx.id] = new Chart(ctx, {
+                    type: 'bar',
+                    indexAxis: 'y',
+                    data: {
+                        labels: ['招聘周期缩短', '人才获取成本节省', '信息匹配精度提升', '录用失败率降低'],
+                        datasets: [{
+                            label: '提升百分比(%)',
+                            data: [42, 19, 35, 60],
+                            backgroundColor: [
+                                'rgba(52, 152, 219, 0.7)',
+                                'rgba(46, 204, 113, 0.7)',
+                                'rgba(155, 89, 182, 0.7)',
+                                'rgba(241, 196, 15, 0.7)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Stanley Executive 价值创造指标',
+                                font: {
+                                    size: 16
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '提升百分比(%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initTalentAcquisitionChart() {
+                const ctx = document.getElementById('talentAcquisitionChart');
+                if (!ctx) return;
+                
+                // 检查是否已经初始化
+                if (window.chartInstances[ctx.id]) {
+                    window.chartInstances[ctx.id].destroy();
+                }
+                
+                window.chartInstances[ctx.id] = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['CTO招聘成功', '其他高管招聘成功', '激励成本节省', '团队绩效提升'],
+                        datasets: [{
+                            data: [25, 35, 20, 20],
+                            backgroundColor: [
+                                'rgba(52, 152, 219, 0.7)',
+                                'rgba(46, 204, 113, 0.7)',
+                                'rgba(155, 89, 182, 0.7)',
+                                'rgba(241, 196, 15, 0.7)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'AI芯片企业高管招聘项目成果分布',
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initCultureFitChart() {
+                const ctx = document.getElementById('cultureFitChart');
+                if (!ctx) return;
+                
+                // 检查是否已经初始化
+                if (window.chartInstances[ctx.id]) {
+                    window.chartInstances[ctx.id].destroy();
+                }
+                
+                window.chartInstances[ctx.id] = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['标准招聘', '技术辅助招聘', '文化评估与适配系统', 'Stanley文化预适应'],
+                        datasets: [{
+                            label: '入职后6个月离职率(%)',
+                            data: [32, 24, 18, 8],
+                            fill: false,
+                            borderColor: 'rgba(231, 76, 60, 1)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '文化适配系统对入职稳定性的影响',
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '入职后6个月离职率(%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function initConclusionChart() {
+                const ctx = document.getElementById('conclusionChart');
+                if (!ctx) return;
+                
+                // 检查是否已经初始化
+                if (window.chartInstances[ctx.id]) {
+                    window.chartInstances[ctx.id].destroy();
+                }
+                
+                window.chartInstances[ctx.id] = new Chart(ctx, {
+                    type: 'polarArea',
+                    data: {
+                        labels: ['技术驱动', '全球网络', '文化适配', '风险管控', '人才精准度'],
+                        datasets: [{
+                            label: 'Stanley Executive 五大核心竞争力',
+                            data: [95, 90, 85, 92, 88],
+                            backgroundColor: [
+                                'rgba(52, 152, 219, 0.7)',
+                                'rgba(46, 204, 113, 0.7)',
+                                'rgba(155, 89, 182, 0.7)',
+                                'rgba(241, 196, 15, 0.7)',
+                                'rgba(231, 76, 60, 0.7)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Stanley Executive 五大核心竞争力',
+                                font: {
+                                    size: 16
+                                }
+                            },
+                            legend: {
+                                position: 'right'
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+<script>window.parent.postMessage({ action: "ready" }, "*"); 
+ 
+window.console = new Proxy(console, {
+  get(target, prop) {
+    if (['log', 'warn', 'error'].includes(prop)) {
+      return new Proxy(target[prop], {
+        apply(fn, thisArg, args) {
+          fn.apply(thisArg, args);
+          window.parent.postMessage({ action: 'console', 
+            type: prop, 
+            args: args.map((arg) => {
+              try {
+                return JSON.stringify(arg).replace(/^["']|["']$/g, '');
+              } catch (e) {
+                return arg;
+              }
+            }) 
+          }, '*');
+        }
+      });
+    }
+    return target[prop];
+  }
+});
+</script></body>
+</html>
